@@ -1,3 +1,4 @@
+import "antd/dist/antd.min.css";
 import "./App.css";
 import { createBrowserHistory } from "history";
 import {
@@ -5,6 +6,13 @@ import {
   Routes,
   unstable_HistoryRouter as HistoryRouter,
 } from "react-router-dom";
+import AuthenticateTemplate from "./templates/AuthenticateTemplate/AuthenticateTemplate";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import UserTemplate from "./templates/UserTemplate/UserTemplate";
+import HomePage from "./pages/HomePage";
+import Loading from "./components/Loading/Loading";
+
 export const history = createBrowserHistory();
 
 function App() {
@@ -12,14 +20,13 @@ function App() {
     <HistoryRouter history={history}>
       {/* <Loading></Loading> */}
       <Routes>
-        {/* <Route path="/" element={<HomeTemplate />}> */}
-        {/* <Route path="/home" element={<HomePage />} />
-          <Route path="/yoga" element={<YogaPage />} />
-          <Route path="/apartment" element={<HomePage />} />
-          <Route path="/" element={<HomePage />} /> */}
-        {/* </Route> */}
-        <Route path="/" element={<h1>abs</h1>} />
-        <Route path="/home" element={<h1>Home</h1>} />
+        <Route path="auth" element={<AuthenticateTemplate />}>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+        </Route>
+        <Route path="/" element={<UserTemplate />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
       </Routes>
     </HistoryRouter>
   );
