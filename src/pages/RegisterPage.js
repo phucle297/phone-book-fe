@@ -3,6 +3,7 @@ import React, { memo } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
+import { RegisterAction } from "../redux/actions/AuthenticateActions";
 import { REGEX_ASCII } from "../util/setting";
 function RegisterPage() {
   const dispatch = useDispatch();
@@ -33,9 +34,8 @@ function RegisterPage() {
         .required("Không được bỏ trống"),
     }),
     onSubmit: (values) => {
-      // const action = RegisterAction(values);
-      // dispatch(action);
-      console.log(values);
+      const action = RegisterAction(values);
+      dispatch(action);
     },
   });
   return (

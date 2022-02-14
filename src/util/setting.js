@@ -1,6 +1,4 @@
 import axios from "axios";
-export const TOKEN_CYBERSOFT =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCAwOEUiLCJIZXRIYW5TdHJpbmciOiIwNS8wMi8yMDIyIiwiSGV0SGFuVGltZSI6IjE2NDQwMTkyMDAwMDAiLCJuYmYiOjE2MTY1MTg4MDAsImV4cCI6MTY0NDE2NjgwMH0.iIk4OcH5Y7-xv_PZiazsjcBJkUj-eyGHjgFCfmWNnL0";
 export const REGEX_PHONE_NUMBER_VIETNAM = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
 export const REGEX_EMAIL =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -11,8 +9,7 @@ export const REGEX_ASCII =
 export const ACCESS_TOKEN = "accessToken";
 export const USER_ACCOUNT = "userAccount";
 export const http = axios.create({
-  baseURL: "https://movienew.cybersoft.edu.vn",
-  // baseURL: "http://movieapi.cyberlearn.vn",
+  baseURL: "http://localhost:8080/api",
   timeout: 30000,
 });
 
@@ -20,12 +17,7 @@ http.interceptors.request.use(
   (config) => {
     config.headers = {
       ...config.headers,
-      TokenCyberSoft: TOKEN_CYBERSOFT,
       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
-      // "Access-Control-Allow-Origin": "*",
-      // "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTION",
-      // "Access-Control-Allow-Credential": true,
-      // "Access-Control-Allow-Headers": "Content-Type",
     };
     return config;
   },

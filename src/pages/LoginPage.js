@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
+import { LoginAction } from "../redux/actions/AuthenticateActions";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -18,9 +19,8 @@ export default function LoginPage() {
       password: Yup.string().required("Không được bỏ trống"),
     }),
     onSubmit: (values) => {
-      // const action = LoginAction(values);
-      // dispatch(action);
-      console.log(values);
+      const action = LoginAction(values);
+      dispatch(action);
     },
   });
   return (
