@@ -22,7 +22,7 @@ export default function UserTemplate() {
       }
     }
   }, []);
-  const [collapsed, setCollapsed] = React.useState(false);
+  const [collapsed, setCollapsed] = React.useState(true);
 
   return (
     <>
