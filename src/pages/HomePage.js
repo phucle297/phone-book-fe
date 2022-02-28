@@ -3,40 +3,35 @@ import { Input, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  chooseUserAction,
   deleteUserAction,
   getAllUserAction,
   getUserInfoAction,
+  openModalAction,
+  searchUserAction,
 } from "../redux/actions/UserAction";
 import { parseJwt } from "../util/setting";
 import { Table } from "antd";
+import ModalSMSEmail from "../components/ModalSmsAndEmail/ModalSMSEmail";
+
 const { Search } = Input;
-
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record) => ({
-    // Column configuration not to be checked
-    name: record.name,
-  }),
-};
-const onSearch = (value) => console.log(value);
-
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { userDetail, userArr } = useSelector((state) => state.UserReducer);
-
+  const { userDetail, userArr, arrUserSelected, modal } = useSelector(
+    (state) => state.UserReducer
+  );
+  const [search, setSearch] = useState("");
   useEffect(async () => {
-    const getInfoAction = getUserInfoAction();
-    await dispatch(getInfoAction);
-    const getAllUAction = getAllUserAction();
-    await dispatch(getAllUAction);
-  }, [userArr]);
-
+    if (search === "") {
+      const getInfoAction = getUserInfoAction();
+      await dispatch(getInfoAction);
+      const getAllUAction = getAllUserAction();
+      await dispatch(getAllUAction);
+    } else {
+      const searchAction = searchUserAction(search);
+      await dispatch(searchAction);
+    }
+  }, [search]);
   const columns = [
     {
       title: "Id",
@@ -114,11 +109,20 @@ const HomePage = () => {
       },
     },
   ];
-
   userArr.map((item) => {
     item.key = item.userId;
     return item;
   });
+  const onSearch = (value) => {
+    setSearch(value);
+  };
+  let rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      const action = chooseUserAction(selectedRows);
+      dispatch(action);
+    },
+  };
+
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold m-5">Danh bạ</h1>
@@ -128,11 +132,23 @@ const HomePage = () => {
           onSearch={onSearch}
           enterButton
         />
-        <button className="bg-sky-400 hover:bg-sky-500 rounded ml-3 px-2 py-2 w-28 font-bold">
-          Gửi Email
-        </button>
-        <button className="bg-green-400 hover:bg-green-500 rounded ml-3 px-2 py-2 w-28 font-bold">
+        <button
+          className="bg-sky-400 hover:bg-sky-500 rounded ml-3 px-2 py-2 w-28 font-bold"
+          onClick={() => {
+            const action = openModalAction("Gửi SMS");
+            dispatch(action);
+          }}
+        >
           Gửi SMS
+        </button>
+        <button
+          className="bg-green-400 hover:bg-green-500 rounded ml-3 px-2 py-2 w-28 font-bold"
+          onClick={() => {
+            const action = openModalAction("Gửi Email");
+            dispatch(action);
+          }}
+        >
+          Gửi Email
         </button>
       </div>
       <Table
@@ -144,6 +160,7 @@ const HomePage = () => {
         dataSource={userArr}
         scroll={{ x: 1100, y: window.innerHeight - 280 }}
       />
+      <ModalSMSEmail />
     </div>
   );
 };

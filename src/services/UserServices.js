@@ -13,6 +13,9 @@ class UserServices {
   deleteUser(id) {
     return http.delete(`/users/delete/${id}`);
   }
+  search(searchContent){
+    return http.get(`/users/search/${searchContent}`);
+  }
 }
 
 const userServices = new UserServices();

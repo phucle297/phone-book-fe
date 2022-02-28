@@ -1,5 +1,13 @@
 import UserServices from "../../services/UserServices";
-import { DELETE_USER, GET_USERS, GET_USER_INFO } from "../types/UserType";
+import {
+  CHOOSE_USER,
+  CLOSE_MODAL,
+  DELETE_USER,
+  GET_USERS,
+  GET_USER_INFO,
+  OPEN_MODAL,
+  SEARCH_USER,
+} from "../types/UserType";
 export const getUserInfoAction = () => {
   return (dispatch) => {
     const promise = UserServices.getMyData();
@@ -22,5 +30,30 @@ export const deleteUserAction = (id) => {
     promise.then((res) => {
       dispatch({ type: DELETE_USER, id });
     });
+  };
+};
+
+export const searchUserAction = (searchContent) => {
+  return (dispatch) => {
+    const promise = UserServices.search(searchContent);
+    promise.then((res) => {
+      dispatch({ type: SEARCH_USER, usersSearch: res.data.data });
+    });
+  };
+};
+
+export const chooseUserAction = (arrUser) => {
+  return (dispatch) => {
+    dispatch({ type: CHOOSE_USER, arrUser });
+  };
+};
+export const openModalAction = (title) => {
+  return (dispatch) => {
+    dispatch({ type: OPEN_MODAL, title });
+  };
+};
+export const closeModalAction = () => {
+  return (dispatch) => {
+    dispatch({ type: CLOSE_MODAL });
   };
 };

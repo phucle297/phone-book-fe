@@ -1,9 +1,22 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { DELETE_USER, GET_USERS, GET_USER_INFO } from "../types/UserType";
+import {
+  CHOOSE_USER,
+  CLOSE_MODAL,
+  DELETE_USER,
+  GET_USERS,
+  GET_USER_INFO,
+  OPEN_MODAL,
+  SEARCH_USER,
+} from "../types/UserType";
 
 const initialState = {
   userDetail: {},
   userArr: [],
+  arrUserSelected: [],
+  modal: {
+    title: "Gửi SMS",
+    visible: false,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -17,7 +30,23 @@ export default (state = initialState, action) => {
       state.userArr = newUserArr;
       return { ...state };
     }
-
+    case SEARCH_USER: {
+      state.userArr = action.usersSearch;
+      return { ...state };
+    }
+    case CHOOSE_USER: {
+      state.arrUserSelected = action.arrUser;
+      return { ...state };
+    }
+    case OPEN_MODAL: {
+      state.modal.title = action.title;
+      state.modal.visible = true;
+      return { ...state };
+    }
+    case CLOSE_MODAL: {
+      state.modal.visible = false;
+      return { ...state };
+    }
     default:
       return { ...state };
   }
