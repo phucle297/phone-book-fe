@@ -1,7 +1,9 @@
 import { http } from "../util/setting";
 
 class SmsServices {
-  sendSms() {}
+  sendSms(content, receivers) {
+    return http.post("/sms/send-sms", { content, receivers });
+  }
 }
 
 const smsServices = new SmsServices();

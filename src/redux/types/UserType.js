@@ -5,3 +5,4 @@ export const SEARCH_USER = "SEARCH_USER";
 export const CHOOSE_USER = "CHOOSE_USER";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const SEND_SMS = "SEND_SMS";

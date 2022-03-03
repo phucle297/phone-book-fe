@@ -1,3 +1,4 @@
+import SmsServices from "../../services/SmsServices";
 import UserServices from "../../services/UserServices";
 import {
   CHOOSE_USER,
@@ -7,6 +8,7 @@ import {
   GET_USER_INFO,
   OPEN_MODAL,
   SEARCH_USER,
+  SEND_SMS,
 } from "../types/UserType";
 export const getUserInfoAction = () => {
   return (dispatch) => {
@@ -55,5 +57,13 @@ export const openModalAction = (title) => {
 export const closeModalAction = () => {
   return (dispatch) => {
     dispatch({ type: CLOSE_MODAL });
+  };
+};
+export const sendSmsAction = (content, receivers) => {
+  return (dispatch) => {
+    const promise = SmsServices.sendSms(content, receivers);
+    promise.then((res) => {
+      dispatch({ type: SEND_SMS, content, receivers, message: res.data });
+    });
   };
 };

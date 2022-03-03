@@ -7,6 +7,7 @@ import {
   GET_USER_INFO,
   OPEN_MODAL,
   SEARCH_USER,
+  SEND_SMS,
 } from "../types/UserType";
 
 const initialState = {
@@ -45,6 +46,10 @@ export default (state = initialState, action) => {
     }
     case CLOSE_MODAL: {
       state.modal.visible = false;
+      return { ...state };
+    }
+    case SEND_SMS: {
+      console.log(action);
       return { ...state };
     }
     default:
