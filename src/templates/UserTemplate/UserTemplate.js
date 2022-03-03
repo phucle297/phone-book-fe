@@ -67,9 +67,7 @@ export default function UserTemplate() {
             </Menu>
           </Sider>
           <Layout className="site-layout">
-            {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
             <Outlet />
-            {/* <Footer style={{ textAlign: "center" }}>Design by Phuc Le</Footer> */}
           </Layout>
         </Layout>
       ) : (

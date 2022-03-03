@@ -133,7 +133,7 @@ const HomePage = () => {
           enterButton
         />
         <button
-          className="bg-sky-400 hover:bg-sky-500 rounded ml-3 px-2 py-2 w-28 font-bold"
+          className="bg-sky-400 hover:bg-sky-500 rounded ml-3 px-1 md:px-2 py-2 w-28 font-bold text-xs md:text-sm lg:text-base"
           onClick={() => {
             const action = openModalAction("Gửi SMS");
             dispatch(action);
@@ -142,7 +142,7 @@ const HomePage = () => {
           Gửi SMS
         </button>
         <button
-          className="bg-green-400 hover:bg-green-500 rounded ml-3 px-2 py-2 w-28 font-bold"
+          className="bg-green-400 hover:bg-green-500 rounded ml-3 px-1 md:px-2 py-2 w-28 font-bold text-xs md:text-sm lg:text-base"
           onClick={() => {
             const action = openModalAction("Gửi Email");
             dispatch(action);
