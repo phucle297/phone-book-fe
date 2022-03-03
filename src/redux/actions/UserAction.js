@@ -1,3 +1,4 @@
+import { message, notification } from "antd";
 import SmsServices from "../../services/SmsServices";
 import UserServices from "../../services/UserServices";
 import {
@@ -62,8 +63,43 @@ export const closeModalAction = () => {
 export const sendSmsAction = (content, receivers) => {
   return (dispatch) => {
     const promise = SmsServices.sendSms(content, receivers);
-    promise.then((res) => {
-      dispatch({ type: SEND_SMS, content, receivers, message: res.data });
-    });
+    promise
+      .then((res) => {
+        dispatch({ type: SEND_SMS, content, receivers, data: res.data });
+        // if (res.data.)
+        if (res.data.data.arrNumErr.length === 0) {
+          message.success("Gửi tin nhắn thành công!");
+        } else {
+          console.log(res.data);
+          notification["info"]({
+            message: "",
+            description: (
+              <div>
+                <div>
+                  <b>Gửi tin nhắn thành công:</b>
+                  {res.data.data.arrNumSuccess.map((num, index) => (
+                    <p key={index} className="my-2">
+                      {num}
+                    </p>
+                  ))}
+                </div>
+                <div>
+                  <b>Gửi tin nhắn thất bại:</b>
+                  {res.data.data.arrNumErr.map((num, index) => (
+                    <p key={index} className="my-2">
+                      {num}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ),
+            duration: 10,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Gửi tin nhắn thất bại!");
+      });
   };
 };

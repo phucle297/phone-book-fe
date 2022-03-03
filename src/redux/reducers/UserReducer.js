@@ -49,7 +49,6 @@ export default (state = initialState, action) => {
       return { ...state };
     }
     case SEND_SMS: {
-      console.log(action);
       return { ...state };
     }
     default:
