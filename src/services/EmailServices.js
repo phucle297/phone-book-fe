@@ -4,7 +4,14 @@ class EmailServices {
   attachFile(file) {
     return http.post("/emails/attach-file", file);
   }
-  sendEmail(email) {}
+  sendEmail(subject, emailContent, receivers, attachments) {
+    return http.post("/emails/send-email", {
+      subject,
+      emailContent,
+      receivers,
+      attachments,
+    });
+  }
 }
 
 const emailServices = new EmailServices();

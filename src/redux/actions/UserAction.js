@@ -121,3 +121,25 @@ export const detachFileAction = (name) => {
     dispatch({ type: DETACH_FILE, name });
   };
 };
+export const sendEmailAction = (
+  subject,
+  emailContent,
+  receivers,
+  attachments
+) => {
+  return (dispatch) => {
+    const promise = EmailServices.sendEmail(
+      subject,
+      emailContent,
+      receivers,
+      attachments
+    );
+    promise.then((res) => {
+      dispatch({ type: SEND_SMS });
+      message.success("Gửi email thành công!");
+    });
+    promise.catch((err) => {
+      message.error("Gửi email thất bại!");
+    });
+  };
+};

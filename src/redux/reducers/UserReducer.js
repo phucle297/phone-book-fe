@@ -9,6 +9,7 @@ import {
   GET_USER_INFO,
   OPEN_MODAL,
   SEARCH_USER,
+  SEND_EMAIL,
   SEND_SMS,
 } from "../types/UserType";
 
@@ -63,6 +64,10 @@ export default (state = initialState, action) => {
         (url) => !url.includes(action.name)
       );
       state.attachedFiles = newAttachedFiles;
+      return { ...state };
+    }
+    case SEND_EMAIL: {
+      state.attachedFiles = [];
       return { ...state };
     }
     default:
