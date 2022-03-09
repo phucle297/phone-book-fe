@@ -1,26 +1,59 @@
-import { Modal } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Upload } from "antd";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  attachedFileAction,
   closeModalAction,
+  detachFileAction,
   sendSmsAction,
 } from "../../redux/actions/UserAction";
+import { ACCESS_TOKEN, http } from "../../util/setting";
 import "./ModalSMSEmail.css";
 
 const ModalSMSEmail = (props) => {
-  const { modal, arrUserSelected } = useSelector((state) => state.UserReducer);
+  const { modal, arrUserSelected, attachedFiles } = useSelector(
+    (state) => state.UserReducer
+  );
   const [text, setText] = useState("");
-  const [imgSrc, setImgSrc] = useState("");
+  const [subject, setSubject] = useState("");
   const dispatch = useDispatch();
+
   const handleOk = () => {
     const action = closeModalAction();
     dispatch(action);
-    const receiverSMS = arrUserSelected.map((user) => user.phone);
-    const actionSendSMS = sendSmsAction(text, receiverSMS);
-    dispatch(actionSendSMS);
+    if (modal.title === "Gửi SMS") {
+      const receiverSMS = arrUserSelected.map((user) => user.phone);
+      const actionSendSMS = sendSmsAction(text, receiverSMS);
+      dispatch(actionSendSMS);
+      setText("");
+    } else {
+      const receiverEmail = arrUserSelected.map((user) => user.email);
+      console.log("receiverEmail:", receiverEmail);
+      console.log("subject:", subject);
+      console.log("text:", text);
+      setText("");
+    }
+  };
+  console.log("attachedFiles:", attachedFiles);
+  const attachProps = {
+    onChange({ file, fileList }) {
+      console.log(file, fileList);
+      if (fileList.length < attachedFiles.length) {
+        const action = detachFileAction(file.name);
+        dispatch(action);
+      }
+    },
+  };
+  const dummyRequest = async ({ file, onSuccess }) => {
+    const action = attachedFileAction(file);
+    await dispatch(action);
+    return onSuccess("ok");
   };
   const handleCancel = () => {
     const action = closeModalAction();
+    setText("");
+    setSubject("");
     dispatch(action);
   };
   const renderUser = () => {
@@ -46,16 +79,8 @@ const ModalSMSEmail = (props) => {
   const handleChangeText = (e) => {
     setText(e.target.value);
   };
-  const handleChangeFile = (e) => {
-    let file = e.target.files[0];
-    console.log(file);
-
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      setImgSrc(e.target.result);
-    };
-    console.log(imgSrc);
+  const handleChangeSubject = (e) => {
+    setSubject(e.target.value);
   };
   return (
     <>
@@ -86,14 +111,33 @@ const ModalSMSEmail = (props) => {
           </div>
           <div className="col-span-1 md:col-span-2 h-full">
             <form action="">
-              <textarea
-                className="border w-full"
-                value={text}
-                onChange={handleChangeText}
-              ></textarea>
               {modal.title === "Gửi Email" ? (
-                <input type="file" onChange={handleChangeFile} />
-              ) : null}
+                <>
+                  <input
+                    type="text"
+                    className="border w-full mb-2 rounded p-2"
+                    placeholder="Tiêu đề"
+                    value={subject}
+                    onChange={handleChangeSubject}
+                  />
+                  <textarea
+                    placeholder="Nội dung"
+                    className="border w-full rounded p-2"
+                    value={text}
+                    onChange={handleChangeText}
+                  ></textarea>
+                  <Upload {...attachProps} customRequest={dummyRequest}>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload>
+                </>
+              ) : (
+                <textarea
+                  placeholder="Nội dung"
+                  className="border w-full rounded p-2"
+                  value={text}
+                  onChange={handleChangeText}
+                ></textarea>
+              )}
             </form>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import { message, notification } from "antd";
+import EmailServices from "../../services/EmailServices";
 import SmsServices from "../../services/SmsServices";
 import UserServices from "../../services/UserServices";
 import {
+  ATTACH_FILE,
   CHOOSE_USER,
   CLOSE_MODAL,
   DELETE_USER,
+  DETACH_FILE,
   GET_USERS,
   GET_USER_INFO,
   OPEN_MODAL,
@@ -101,5 +104,20 @@ export const sendSmsAction = (content, receivers) => {
         console.log(err);
         message.error("Gửi tin nhắn thất bại!");
       });
+  };
+};
+export const attachedFileAction = (file) => {
+  return (dispatch) => {
+    let formData = new FormData();
+    formData.append("attachedFile", file);
+    const promise = EmailServices.attachFile(formData);
+    promise.then((res) => {
+      dispatch({ type: ATTACH_FILE, url: res.data.data.url });
+    });
+  };
+};
+export const detachFileAction = (name) => {
+  return (dispatch) => {
+    dispatch({ type: DETACH_FILE, name });
   };
 };

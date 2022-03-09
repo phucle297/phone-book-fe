@@ -6,3 +6,6 @@ export const CHOOSE_USER = "CHOOSE_USER";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const SEND_SMS = "SEND_SMS";
+export const SEND_EMAIL = "SEND_EMAIL";
+export const ATTACH_FILE = "ATTACH_FILE";
+export const DETACH_FILE = "DETACH_FILE";

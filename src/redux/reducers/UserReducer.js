@@ -1,8 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 import {
+  ATTACH_FILE,
   CHOOSE_USER,
   CLOSE_MODAL,
   DELETE_USER,
+  DETACH_FILE,
   GET_USERS,
   GET_USER_INFO,
   OPEN_MODAL,
@@ -18,6 +20,7 @@ const initialState = {
     title: "Gửi SMS",
     visible: false,
   },
+  attachedFiles: [],
 };
 
 export default (state = initialState, action) => {
@@ -48,7 +51,18 @@ export default (state = initialState, action) => {
       state.modal.visible = false;
       return { ...state };
     }
-    case SEND_SMS: {
+    case ATTACH_FILE: {
+      if (action.url) {
+        const newAttachedFiles = [...state.attachedFiles, action.url];
+        state.attachedFiles = newAttachedFiles;
+      }
+      return { ...state };
+    }
+    case DETACH_FILE: {
+      const newAttachedFiles = state.attachedFiles.filter(
+        (url) => !url.includes(action.name)
+      );
+      state.attachedFiles = newAttachedFiles;
       return { ...state };
     }
     default:
