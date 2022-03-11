@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
+import { DONE_LOADING, START_LOADING } from "../../redux/types/LoadingType";
 import "./AuthenticateTemplate.css";
 export default function AuthenticateTemplate() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch({ type: DONE_LOADING });
+    }, 1000);
+    dispatch({ type: START_LOADING });
+  }, []);
   return (
     <section className="auth">
       <div className="account__card">

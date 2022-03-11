@@ -18,7 +18,7 @@ export const history = createBrowserHistory();
 function App() {
   return (
     <HistoryRouter history={history}>
-      {/* <Loading></Loading> */}
+      <Loading></Loading>
       <Routes>
         <Route path="auth" element={<AuthenticateTemplate />}>
           <Route path="login" element={<LoginPage />} />

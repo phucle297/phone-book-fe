@@ -14,6 +14,7 @@ import {
   openModalUpdateAction,
   searchUserAction,
 } from "../redux/actions/UserAction";
+import { DONE_LOADING, START_LOADING } from "../redux/types/LoadingType";
 
 const { Search } = Input;
 const HomePage = () => {
@@ -130,7 +131,6 @@ const HomePage = () => {
       dispatch(action);
     },
   };
-
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold m-5">Danh bạ</h1>

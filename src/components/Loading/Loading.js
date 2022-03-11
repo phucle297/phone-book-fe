@@ -5,9 +5,6 @@ import "./Loading.css";
 export default function Loading() {
   const { isLoading } = useSelector((state) => state.LoadingReducer);
   return (
-    // <div className={isLoading ? "loading-container" : "loading-container-hide"}>
-    //   <img src="./assets/images/jlyg2.png" alt="" width={400} height={400} />
-    // </div>
     <div
       className={
         "loadingio-spinner-spinner-9ik05wxa55 transition-all duration-50 " +
