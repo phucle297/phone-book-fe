@@ -1,4 +1,11 @@
-import { BookOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+/* eslint-disable jsx-a11y/alt-text */
+import {
+  BookOutlined,
+  LogoutOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, message } from "antd";
 import React, { useEffect } from "react";
 import { Navigate, Outlet, NavLink } from "react-router-dom";
@@ -30,7 +37,6 @@ export default function UserTemplate() {
       }
     }
   }, []);
-  useEffect(() => {}, []);
   const [collapsed, setCollapsed] = React.useState(true);
 
   return (
@@ -62,8 +68,14 @@ export default function UserTemplate() {
               <Menu.Item key="2" icon={<UserOutlined />}>
                 <NavLink to="/info">User</NavLink>
               </Menu.Item>
+              <Menu.Item key="3" icon={<PhoneOutlined />}>
+                <NavLink to="/sms">Sms</NavLink>
+              </Menu.Item>
+              <Menu.Item key="4" icon={<MailOutlined />}>
+                <NavLink to="/email">Mail</NavLink>
+              </Menu.Item>
               <Menu.Item
-                key="3"
+                key="5"
                 icon={<LogoutOutlined />}
                 onClick={() => {
                   localStorage.clear();

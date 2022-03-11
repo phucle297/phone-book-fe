@@ -12,6 +12,9 @@ import RegisterPage from "./pages/RegisterPage";
 import UserTemplate from "./templates/UserTemplate/UserTemplate";
 import HomePage from "./pages/HomePage";
 import Loading from "./components/Loading/Loading";
+import InfoPage from "./pages/InfoPage";
+import HistorySmsPage from "./pages/HistorySmsPage";
+import HistoryEmailPage from "./pages/HistoryEmailPage";
 
 export const history = createBrowserHistory();
 
@@ -25,6 +28,9 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
         </Route>
         <Route path="/" element={<UserTemplate />}>
+          <Route path="/info" element={<InfoPage />} />
+          <Route path="/sms" element={<HistorySmsPage />} />
+          <Route path="/email" element={<HistoryEmailPage />} />
           <Route path="/" element={<HomePage />} />
         </Route>
       </Routes>
