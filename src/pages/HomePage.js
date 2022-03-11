@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Input, message } from "antd";
+import { Input, message, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ModalContact from "../components/ModalContact/ModalContact";
+import ModalSMSEmail from "../components/ModalSmsAndEmail/ModalSMSEmail";
+import { getCompanyByIdAction } from "../redux/actions/CompanyAction";
 import {
   chooseUserAction,
   deleteUserAction,
   getAllUserAction,
   getUserInfoAction,
   openModalAction,
+  openModalUpdateAction,
   searchUserAction,
 } from "../redux/actions/UserAction";
-import { parseJwt } from "../util/setting";
-import { Table } from "antd";
-import ModalSMSEmail from "../components/ModalSmsAndEmail/ModalSMSEmail";
 
 const { Search } = Input;
 const HomePage = () => {
@@ -64,8 +65,11 @@ const HomePage = () => {
       dataIndex: "avatar",
       render: (text, record, index) => {
         let srcImg;
-        if (text) srcImg = "https://" + text.replaceAll(" ", "%20");
-        else srcImg = `https://picsum.photos/200/200?random=${index}`;
+        if (text) {
+          if (text.includes("http")) {
+            srcImg = text.replaceAll(" ", "%20");
+          } else srcImg = "https://" + text.replaceAll(" ", "%20");
+        } else srcImg = `https://picsum.photos/200/200?random=${index}`;
         return (
           <img src={srcImg} alt="avatar" className="w-12 h-12 rounded-full" />
         );
@@ -85,6 +89,11 @@ const HomePage = () => {
                   message.error(
                     "Bạn chỉ có thể chỉnh sửa liên hệ nếu bạn là Admin"
                   );
+                } else {
+                  const actionOpenModal = openModalUpdateAction(record);
+                  dispatch(actionOpenModal);
+                  const action = getCompanyByIdAction(record.companyId);
+                  dispatch(action);
                 }
               }}
             >
@@ -98,7 +107,6 @@ const HomePage = () => {
                 } else {
                   const deleteAction = deleteUserAction(record.userId);
                   await dispatch(deleteAction);
-                  message.success("Xóa liên hệ thành công");
                 }
               }}
             >
@@ -161,6 +169,7 @@ const HomePage = () => {
         scroll={{ x: 1100, y: window.innerHeight - 280 }}
       />
       <ModalSMSEmail />
+      <ModalContact />
     </div>
   );
 };

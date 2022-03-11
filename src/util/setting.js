@@ -1,5 +1,6 @@
 import axios from "axios";
 export const REGEX_PHONE_NUMBER_VIETNAM = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+export const REGEX_PHONE_NUMBER = /^[0-9\-\+]{9,15}$/;
 export const REGEX_EMAIL =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 export const REGEX_URL =

@@ -1,7 +1,8 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Upload } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllCompanyAction } from "../../redux/actions/CompanyAction";
 import {
   attachedFileAction,
   closeModalAction,
@@ -9,7 +10,6 @@ import {
   sendEmailAction,
   sendSmsAction,
 } from "../../redux/actions/UserAction";
-import { ACCESS_TOKEN, http } from "../../util/setting";
 import "./ModalSMSEmail.css";
 
 const ModalSMSEmail = (props) => {
@@ -19,7 +19,10 @@ const ModalSMSEmail = (props) => {
   const [text, setText] = useState("");
   const [subject, setSubject] = useState("");
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    const actionGetAllCompany = getAllCompanyAction();
+    dispatch(actionGetAllCompany);
+  }, []);
   const handleOk = () => {
     const action = closeModalAction();
     dispatch(action);

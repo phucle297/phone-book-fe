@@ -1,0 +1,9 @@
+.modal-contact .form-group {
+  @apply my-3;
+}
+.modal-contact .form-group p {
+  margin-bottom: 0;
+}
+.modal-contact input {
+  @apply w-full border p-2;
+}

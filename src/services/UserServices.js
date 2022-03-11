@@ -13,8 +13,11 @@ class UserServices {
   deleteUser(id) {
     return http.delete(`/users/delete/${id}`);
   }
-  search(searchContent){
+  search(searchContent) {
     return http.get(`/users/search/${searchContent}`);
+  }
+  editUser(user) {
+    return http.put(`/users/edit`, user);
   }
 }
 

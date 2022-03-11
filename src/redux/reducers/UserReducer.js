@@ -1,18 +1,18 @@
 /* eslint-disable import/no-anonymous-default-export */
 import {
-  ATTACH_FILE,
+  ADD_AVATAR_CONTACT,
   CHOOSE_USER,
   CLOSE_MODAL,
   DELETE_USER,
-  DETACH_FILE,
   GET_USERS,
   GET_USER_INFO,
   OPEN_MODAL,
+  OPEN_UPDATE_MODAL,
   SEARCH_USER,
-  SEND_EMAIL,
-  SEND_SMS,
+  UPDATE_CONTACT,
 } from "../types/UserType";
-
+import { SEND_EMAIL } from "../types/EmailType";
+import { ATTACH_FILE, DETACH_FILE } from "../types/EmailType";
 const initialState = {
   userDetail: {},
   userArr: [],
@@ -22,6 +22,19 @@ const initialState = {
     visible: false,
   },
   attachedFiles: [],
+  chosenContact: {
+    visible: false,
+    user: {
+      userId: 0,
+      address: "",
+      companyId: 0,
+      email: "",
+      name: "",
+      phone: "",
+      role: "",
+      avatar: "",
+    },
+  },
 };
 
 export default (state = initialState, action) => {
@@ -31,7 +44,9 @@ export default (state = initialState, action) => {
     case GET_USERS:
       return { ...state, userArr: action.userArr };
     case DELETE_USER: {
-      const newUserArr = state.userArr.filter((user) => user.id !== action.id);
+      const newUserArr = [...state.userArr].filter(
+        (user) => user.userId !== action.id
+      );
       state.userArr = newUserArr;
       return { ...state };
     }
@@ -50,6 +65,19 @@ export default (state = initialState, action) => {
     }
     case CLOSE_MODAL: {
       state.modal.visible = false;
+      state.chosenContact = {
+        visible: false,
+        user: {
+          userId: 0,
+          address: "",
+          companyId: 0,
+          email: "",
+          name: "",
+          phone: "",
+          role: "",
+          avatar: "",
+        },
+      };
       return { ...state };
     }
     case ATTACH_FILE: {
@@ -68,6 +96,28 @@ export default (state = initialState, action) => {
     }
     case SEND_EMAIL: {
       state.attachedFiles = [];
+      return { ...state };
+    }
+    case OPEN_UPDATE_MODAL: {
+      state.chosenContact = { visible: true, user: action.user };
+      return { ...state };
+    }
+    case ADD_AVATAR_CONTACT: {
+      state.chosenContact.user.avatar = action.url;
+      return { ...state };
+    }
+    case UPDATE_CONTACT: {
+      const arrUpdated = [...state.userArr];
+      const index = arrUpdated.findIndex(
+        (user) => user.userId === action.user.userId
+      );
+      const userUpdated = {
+        ...action.user,
+        companyId: state.userArr[index].companyId,
+        role: state.userArr[index].role,
+      };
+      arrUpdated[index] = userUpdated;
+      state.userArr = arrUpdated;
       return { ...state };
     }
     default:

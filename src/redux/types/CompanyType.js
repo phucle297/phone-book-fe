@@ -1,0 +1,2 @@
+export const GET_COMPANIES = "GET_COMPANIES";
+export const GET_COMPANY_BY_ID = "GET_COMPANY_BY_ID";
