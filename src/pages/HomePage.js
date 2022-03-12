@@ -14,14 +14,11 @@ import {
   openModalUpdateAction,
   searchUserAction,
 } from "../redux/actions/UserAction";
-import { DONE_LOADING, START_LOADING } from "../redux/types/LoadingType";
 
 const { Search } = Input;
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { userDetail, userArr, arrUserSelected, modal } = useSelector(
-    (state) => state.UserReducer
-  );
+  const { userDetail, userArr } = useSelector((state) => state.UserReducer);
   const [search, setSearch] = useState("");
   useEffect(async () => {
     if (search === "") {
@@ -133,7 +130,7 @@ const HomePage = () => {
   };
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold m-5">Danh bạ</h1>
+      <h1 className="text-4xl font-bold m-5">Danh bạ</h1>
       <div className="controller flex items-center justify-around my-2">
         <Search
           placeholder="input search text"

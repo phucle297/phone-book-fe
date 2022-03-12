@@ -1,8 +1,9 @@
 import { message, notification } from "antd";
-import CompanyServices from "../../services/CompanyServices";
 import EmailServices from "../../services/EmailServices";
 import SmsServices from "../../services/SmsServices";
 import UserServices from "../../services/UserServices";
+import { ATTACH_FILE, DETACH_FILE } from "../types/EmailType";
+import { SEND_SMS } from "../types/SmsType";
 import {
   ADD_AVATAR_CONTACT,
   CHOOSE_USER,
@@ -14,10 +15,8 @@ import {
   OPEN_UPDATE_MODAL,
   SEARCH_USER,
   UPDATE_CONTACT,
+  UPLOAD_AVATAR,
 } from "../types/UserType";
-import { ATTACH_FILE, DETACH_FILE } from "../types/EmailType";
-import { GET_COMPANIES } from "../types/CompanyType";
-import { SEND_SMS } from "../types/SmsType";
 export const getUserInfoAction = () => {
   return (dispatch) => {
     const promise = UserServices.getMyData();
@@ -175,6 +174,16 @@ export const editContactAction = (user) => {
     });
     promise.catch((err) => {
       message.error("Cập nhật thông tin thất bại!");
+    });
+  };
+};
+export const uploadAvatarAction = (file) => {
+  return (dispatch) => {
+    let formData = new FormData();
+    formData.append("avatar", file);
+    const promise = UserServices.uploadAvatar(formData);
+    promise.then((res) => {
+      dispatch({ type: UPLOAD_AVATAR, url: res.data.data.url });
     });
   };
 };

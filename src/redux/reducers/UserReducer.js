@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { ATTACH_FILE, DETACH_FILE, SEND_EMAIL } from "../types/EmailType";
 import {
   ADD_AVATAR_CONTACT,
   CHOOSE_USER,
@@ -10,9 +11,8 @@ import {
   OPEN_UPDATE_MODAL,
   SEARCH_USER,
   UPDATE_CONTACT,
+  UPLOAD_AVATAR,
 } from "../types/UserType";
-import { SEND_EMAIL } from "../types/EmailType";
-import { ATTACH_FILE, DETACH_FILE } from "../types/EmailType";
 const initialState = {
   userDetail: {},
   userArr: [],
@@ -111,13 +111,25 @@ export default (state = initialState, action) => {
       const index = arrUpdated.findIndex(
         (user) => user.userId === action.user.userId
       );
-      const userUpdated = {
-        ...action.user,
-        companyId: state.userArr[index].companyId,
-        role: state.userArr[index].role,
-      };
-      arrUpdated[index] = userUpdated;
-      state.userArr = arrUpdated;
+      if (state.userArr.length > 0) {
+        const userUpdated = {
+          ...action.user,
+          companyId: state.userArr[index].companyId,
+          role: state.userArr[index].role,
+        };
+        arrUpdated[index] = userUpdated;
+        state.userArr = arrUpdated;
+      } else {
+        const userUpdated = {
+          ...action.user,
+          companyId: state.userDetail.companyId,
+          role: state.userDetail.role,
+        };
+      }
+      return { ...state };
+    }
+    case UPLOAD_AVATAR: {
+      state.userDetail.avatar = action.url;
       return { ...state };
     }
     default:

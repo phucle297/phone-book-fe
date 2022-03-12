@@ -19,6 +19,9 @@ class UserServices {
   editUser(user) {
     return http.put(`/users/edit`, user);
   }
+  uploadAvatar(file) {
+    return http.post(`/users/upload-avatar`, file);
+  }
 }
 
 const userServices = new UserServices();
