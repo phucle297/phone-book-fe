@@ -2,23 +2,26 @@
 import {
   BookOutlined,
   LogoutOutlined,
-  UserOutlined,
-  PhoneOutlined,
   MailOutlined,
+  PhoneOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, message } from "antd";
-import React, { useEffect } from "react";
-import { Navigate, Outlet, NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, NavLink, Outlet } from "react-router-dom";
+import { history } from "../../App";
+import { DONE_LOADING, START_LOADING } from "../../redux/types/LoadingType";
 import { ACCESS_TOKEN, parseJwt } from "../../util/setting";
 import "./UserTemplate.css";
-import { history } from "../../App";
-import { useDispatch } from "react-redux";
-import { DONE_LOADING, START_LOADING } from "../../redux/types/LoadingType";
-
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
 export default function UserTemplate() {
+  let [page, setPage] = useState("");
+  if (window.location.pathname === "/") page = "1";
+  else if (window.location.pathname === "/info") page = "2";
+  else if (window.location.pathname === "/sms") page = "3";
+  else if (window.location.pathname === "/email") page = "4";
+  const { Sider } = Layout;
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(() => {
@@ -38,7 +41,6 @@ export default function UserTemplate() {
     }
   }, []);
   const [collapsed, setCollapsed] = React.useState(true);
-
   return (
     <>
       {localStorage.getItem(ACCESS_TOKEN) ? (
@@ -61,18 +63,26 @@ export default function UserTemplate() {
                 Phone Book
               </h1>
             </div>
-            <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+            <Menu theme="dark" defaultSelectedKeys={page} mode="inline">
               <Menu.Item key="1" icon={<BookOutlined />}>
-                <NavLink to="/">Phone book</NavLink>
+                <NavLink to="/" onClick={() => setPage("1")}>
+                  Phone book
+                </NavLink>
               </Menu.Item>
               <Menu.Item key="2" icon={<UserOutlined />}>
-                <NavLink to="/info">User</NavLink>
+                <NavLink to="/info" onClick={() => setPage("2")}>
+                  User
+                </NavLink>
               </Menu.Item>
               <Menu.Item key="3" icon={<PhoneOutlined />}>
-                <NavLink to="/sms">Sms</NavLink>
+                <NavLink to="/sms" onClick={() => setPage("3")}>
+                  Sms
+                </NavLink>
               </Menu.Item>
               <Menu.Item key="4" icon={<MailOutlined />}>
-                <NavLink to="/email">Mail</NavLink>
+                <NavLink to="/email" onClick={() => setPage("4")}>
+                  Mail
+                </NavLink>
               </Menu.Item>
               <Menu.Item
                 key="5"
