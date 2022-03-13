@@ -2,6 +2,7 @@
 import { Input, message, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ModalAddContact from "../components/ModalAddContact/ModalAddContact";
 import ModalContact from "../components/ModalContact/ModalContact";
 import ModalSMSEmail from "../components/ModalSmsAndEmail/ModalSMSEmail";
 import { getCompanyByIdAction } from "../redux/actions/CompanyAction";
@@ -132,29 +133,43 @@ const HomePage = () => {
     <div className="container mx-auto">
       <h1 className="text-4xl font-bold m-5">Danh bạ</h1>
       <div className="controller flex items-center justify-around my-2">
-        <Search
-          placeholder="input search text"
-          onSearch={onSearch}
-          enterButton
-        />
-        <button
-          className="bg-sky-400 hover:bg-sky-500 rounded ml-3 px-1 md:px-2 py-2 w-28 font-bold text-xs md:text-sm lg:text-base"
-          onClick={() => {
-            const action = openModalAction("Gửi SMS");
-            dispatch(action);
-          }}
-        >
-          Gửi SMS
-        </button>
-        <button
-          className="bg-green-400 hover:bg-green-500 rounded ml-3 px-1 md:px-2 py-2 w-28 font-bold text-xs md:text-sm lg:text-base"
-          onClick={() => {
-            const action = openModalAction("Gửi Email");
-            dispatch(action);
-          }}
-        >
-          Gửi Email
-        </button>
+        <div className="grid grid-cols-11 w-full">
+          <Search
+            className=" col-span-11 lg:col-span-5 xl:col-span-6 my-2"
+            placeholder="input search text"
+            onSearch={onSearch}
+            enterButton
+          />
+          <div className="col-span-11 lg:col-span-6 xl:col-span-5 grid grid-cols-2 md:grid-cols-3 place-items-center">
+            <button
+              className=" col-span-2 md:col-span-1 md:ml-auto bg-orange-400 hover:bg-orange-500 rounded px-1 md:px-2 py-2 w-36 font-bold text-xs md:text-sm lg:text-base"
+              onClick={() => {
+                const action = openModalAction("Thêm liên hệ");
+                dispatch(action);
+              }}
+            >
+              Thêm liên hệ
+            </button>
+            <button
+              className="col-span-1 bg-sky-400 hover:bg-sky-500 rounded px-1 md:px-2 py-2 w-36 font-bold text-xs md:text-sm lg:text-base"
+              onClick={() => {
+                const action = openModalAction("Gửi SMS");
+                dispatch(action);
+              }}
+            >
+              Gửi SMS
+            </button>
+            <button
+              className="col-span-1 bg-green-400 md:mr-auto hover:bg-green-500 rounded px-1 md:px-2 py-2 w-36 font-bold text-xs md:text-sm lg:text-base"
+              onClick={() => {
+                const action = openModalAction("Gửi Email");
+                dispatch(action);
+              }}
+            >
+              Gửi Email
+            </button>
+          </div>
+        </div>
       </div>
       <Table
         rowSelection={{
@@ -165,6 +180,7 @@ const HomePage = () => {
         dataSource={userArr}
         scroll={{ x: 1100, y: window.innerHeight - 280 }}
       />
+      <ModalAddContact />
       <ModalSMSEmail />
       <ModalContact />
     </div>

@@ -13,7 +13,11 @@ export const LoginAction = (account) => {
         message.success("Đăng nhập thành công!");
         history.push("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        message.error(
+          "Đăng nhập thất bại, vui lòng kiểm tra lại tên đăng nhập và mật khẩu"
+        )
+      );
   };
 };
 export const RegisterAction = (account) => {

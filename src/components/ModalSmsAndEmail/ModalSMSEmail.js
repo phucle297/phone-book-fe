@@ -95,7 +95,10 @@ const ModalSMSEmail = (props) => {
     <>
       <Modal
         title={modal.title}
-        visible={modal.visible}
+        visible={
+          modal.visible &&
+          (modal.title === "Gửi SMS" || modal.title === "Gửi Email")
+        }
         onOk={handleOk}
         onCancel={handleCancel}
         width={1000}
