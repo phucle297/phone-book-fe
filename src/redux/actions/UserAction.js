@@ -6,6 +6,7 @@ import { ATTACH_FILE, DETACH_FILE } from "../types/EmailType";
 import { SEND_SMS } from "../types/SmsType";
 import {
   ADD_AVATAR_CONTACT,
+  ADD_USER,
   CHOOSE_USER,
   CLOSE_MODAL,
   DELETE_USER,
@@ -13,6 +14,7 @@ import {
   GET_USER_INFO,
   OPEN_MODAL,
   OPEN_UPDATE_MODAL,
+  REGISTER_USER,
   SEARCH_USER,
   UPDATE_CONTACT,
   UPLOAD_AVATAR,
@@ -184,6 +186,30 @@ export const uploadAvatarAction = (file) => {
     const promise = UserServices.uploadAvatar(formData);
     promise.then((res) => {
       dispatch({ type: UPLOAD_AVATAR, url: res.data.data.url });
+    });
+  };
+};
+export const registerAction = (user) => {
+  return (dispatch) => {
+    const promise = UserServices.register(user);
+    promise.then((res) => {
+      dispatch({ type: REGISTER_USER, user });
+      message.success("Đăng ký thành công!");
+    });
+    promise.catch((err) => {
+      message.error("Đăng ký thất bại!");
+    });
+  };
+};
+export const addUserAction = (user) => {
+  return (dispatch) => {
+    const promise = UserServices.register(user);
+    promise.then((res) => {
+      dispatch({ type: ADD_USER, user });
+      message.success("Thêm người dùng thành công!");
+    });
+    promise.catch((err) => {
+      message.error("Thêm người dùng thất bại!");
     });
   };
 };

@@ -2,6 +2,7 @@
 import { ATTACH_FILE, DETACH_FILE, SEND_EMAIL } from "../types/EmailType";
 import {
   ADD_AVATAR_CONTACT,
+  ADD_USER,
   CHOOSE_USER,
   CLOSE_MODAL,
   DELETE_USER,
@@ -131,6 +132,9 @@ export default (state = initialState, action) => {
     case UPLOAD_AVATAR: {
       state.userDetail.avatar = action.url;
       return { ...state };
+    }
+    case ADD_USER: {
+      state.userArr = [...state.userArr, action.user];
     }
     default:
       return { ...state };

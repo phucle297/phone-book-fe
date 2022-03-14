@@ -1,19 +1,24 @@
-import { Button, Modal, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Select, Upload } from "antd";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import { getCompanyByIdAction } from "../../redux/actions/CompanyAction";
 import {
+  addUserAction,
   closeModalAction,
+  getUserInfoAction,
   uploadAvatarAction,
 } from "../../redux/actions/UserAction";
-import * as Yup from "yup";
-import "./ModalAddContact.css";
 import { REGEX_PHONE_NUMBER } from "../../util/setting";
-import { UploadOutlined } from "@ant-design/icons";
+import "./ModalAddContact.css";
 
 export default function ModalAddContact() {
   const { modal } = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
+  const { Option } = Select;
+
   const handleOk = () => {
     const action = closeModalAction();
     dispatch(action);
@@ -22,16 +27,18 @@ export default function ModalAddContact() {
     const action = closeModalAction();
     dispatch(action);
   };
-  const { companies } = useSelector((state) => state.CompanyReducer);
+  const { companies, company } = useSelector((state) => state.CompanyReducer);
+  const { userDetail } = useSelector((state) => state.UserReducer);
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      userId: "",
       address: "",
       email: "",
       phone: "",
-      role: "",
+      role: "User",
       avatar: "",
       name: "",
+      companyId: userDetail.companyId,
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -43,12 +50,15 @@ export default function ModalAddContact() {
         .matches(REGEX_PHONE_NUMBER, "Số điện thoại không đúng định dạng"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      const action = addUserAction(values);
+      dispatch(action);
+      handleOk();
     },
   });
   const dummyRequest = async ({ file, onSuccess }) => {
     const action = uploadAvatarAction(file);
     await dispatch(action);
+    await formik.setFieldValue("avatar", userDetail.avatar);
     return onSuccess("ok");
   };
   return (
@@ -67,14 +77,14 @@ export default function ModalAddContact() {
             key="submit"
             type="primary"
             onClick={handleOk}
-            // onClickCapture={formik.handleSubmit}
+            onClickCapture={formik.handleSubmit}
           >
             Xác nhận
           </Button>,
         ]}
       >
         <form action="" onSubmit={formik.handleSubmit}>
-          <div className="form-group mt-4">
+          <div className="form-group">
             <p>Họ tên</p>
             <input
               className="w-full border p-2"
@@ -156,20 +166,6 @@ export default function ModalAddContact() {
               value={formik.values.role}
               disabled={true}
             />
-          </div>
-          <div className="form-group mt-4">
-            <p>Công ty</p>
-            {/* <p className="bg-gray-100 border p-2 cursor-no-drop">
-              {company?.companyName}
-            </p> */}
-          </div>
-          <div className="flex items-center justify-center">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded"
-              type="submit"
-            >
-              Cập nhật
-            </button>
           </div>
         </form>
       </Modal>

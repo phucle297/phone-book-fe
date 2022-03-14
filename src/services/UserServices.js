@@ -22,6 +22,9 @@ class UserServices {
   uploadAvatar(file) {
     return http.post(`/users/upload-avatar`, file);
   }
+  register(user) {
+    return http.post(`/users/register`, user);
+  }
 }
 
 const userServices = new UserServices();
