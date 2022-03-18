@@ -59,8 +59,8 @@ export default function InfoPage() {
   };
   return (
     <div>
-      <div className="container mx-auto py-3 bg-white rounded">
-        <h2 className="text-4xl font-bold">Thông tin cá nhân</h2>{" "}
+      <div className="container mx-auto py-4 mt-5 bg-white rounded">
+        <h2 className="text-4xl font-bold">Thông tin cá nhân</h2>
         <div className="container mx-auto">
           <form action="" onSubmit={formik.handleSubmit}>
             <div className="form-group mt-4">

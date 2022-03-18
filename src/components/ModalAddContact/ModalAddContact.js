@@ -1,14 +1,12 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Select, Upload } from "antd";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { getCompanyByIdAction } from "../../redux/actions/CompanyAction";
 import {
   addUserAction,
   closeModalAction,
-  getUserInfoAction,
   uploadAvatarAction,
 } from "../../redux/actions/UserAction";
 import { REGEX_PHONE_NUMBER } from "../../util/setting";
@@ -17,7 +15,6 @@ import "./ModalAddContact.css";
 export default function ModalAddContact() {
   const { modal } = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
-  const { Option } = Select;
 
   const handleOk = () => {
     const action = closeModalAction();
@@ -27,7 +24,6 @@ export default function ModalAddContact() {
     const action = closeModalAction();
     dispatch(action);
   };
-  const { companies, company } = useSelector((state) => state.CompanyReducer);
   const { userDetail } = useSelector((state) => state.UserReducer);
   const formik = useFormik({
     enableReinitialize: true,

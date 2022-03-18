@@ -203,7 +203,8 @@ export const registerAction = (user) => {
 };
 export const addUserAction = (user) => {
   return (dispatch) => {
-    const promise = UserServices.register(user);
+    const userAdded = { ...user, password: "" };
+    const promise = UserServices.register(userAdded);
     promise.then((res) => {
       dispatch({ type: ADD_USER, user });
       message.success("Thêm người dùng thành công!");

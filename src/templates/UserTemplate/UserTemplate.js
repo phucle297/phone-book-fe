@@ -13,9 +13,11 @@ import { Navigate, NavLink, Outlet } from "react-router-dom";
 import { history } from "../../App";
 import { DONE_LOADING, START_LOADING } from "../../redux/types/LoadingType";
 import { ACCESS_TOKEN, parseJwt } from "../../util/setting";
+import { getUserInfoAction } from "../../redux/actions/UserAction";
 import "./UserTemplate.css";
 
 export default function UserTemplate() {
+  const { userDetail } = useSelector((state) => state.UserReducer);
   let [page, setPage] = useState("");
   if (window.location.pathname === "/") page = "1";
   else if (window.location.pathname === "/info") page = "2";
@@ -24,22 +26,27 @@ export default function UserTemplate() {
   const { Sider } = Layout;
   const dispatch = useDispatch();
   useEffect(() => {
-    setTimeout(() => {
-      dispatch({ type: DONE_LOADING });
-    }, 1000);
-    dispatch({ type: START_LOADING });
-    if (!localStorage.getItem(ACCESS_TOKEN))
-      message.info("Bạn cần phải đăng nhập!");
-    else {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      const exp = parseJwt(token).exp;
-      if (Date.now() >= exp * 1000) {
-        message.info("Bạn đã hết phiên đăng nhập, vui lòng đăng nhập lại!");
-        localStorage.clear();
-        history.push("/auth/login");
+    (async () => {
+      const actionGetUserDetail = getUserInfoAction();
+      await dispatch(actionGetUserDetail);
+      setTimeout(() => {
+        dispatch({ type: DONE_LOADING });
+      }, 1000);
+      dispatch({ type: START_LOADING });
+      if (!localStorage.getItem(ACCESS_TOKEN))
+        message.info("Bạn cần phải đăng nhập!");
+      else {
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        const exp = parseJwt(token).exp;
+        if (Date.now() >= exp * 1000) {
+          message.info("Bạn đã hết phiên đăng nhập, vui lòng đăng nhập lại!");
+          localStorage.clear();
+          history.push("/auth/login");
+        }
       }
-    }
+    })();
   }, []);
+
   const [collapsed, setCollapsed] = React.useState(true);
   return (
     <>
@@ -48,7 +55,11 @@ export default function UserTemplate() {
           <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className="logo">
               <img
-                src="https://picsum.photos/200/300"
+                src={
+                  userDetail
+                    ? `${userDetail.avatar}`
+                    : "https://picsum.photos/200/200"
+                }
                 className={
                   " bg-white rounded-full my-10 mx-auto" +
                   (collapsed ? " w-14 h-14" : " w-20 h-20 mb-5")
