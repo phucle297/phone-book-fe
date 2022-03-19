@@ -47,7 +47,6 @@ export default function InfoPage() {
     onSubmit: (values) => {
       const { address, userId, avatar, email, name, phone } = values;
       const user = { userId, address, avatar, email, name, phone };
-      console.log(user);
       const actionEditContact = editContactAction(user);
       dispatch(actionEditContact);
     },

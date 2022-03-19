@@ -46,7 +46,6 @@ const ModalSMSEmail = (props) => {
   };
   const attachProps = {
     onChange({ file, fileList }) {
-      console.log(file, fileList);
       if (attachedFiles.length === 0) return (fileList = []);
       if (fileList.length < attachedFiles.length) {
         const action = detachFileAction(file.name);

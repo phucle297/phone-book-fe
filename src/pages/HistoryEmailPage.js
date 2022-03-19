@@ -5,16 +5,15 @@ import * as dayjs from "dayjs";
 import {
   getAllEmailReceivedAction,
   getAllEmailSentAction,
+  searchEmailAction,
 } from "../redux/actions/EmailAction";
+import ModalSearchEmail from "../components/ModalSearchEmail/ModalSearchEmail";
 
 const { Search } = Input;
 export default function HistoryEmailPage() {
   const { arrEmailReceived, arrEmailSent } = useSelector(
     (state) => state.EmailReducer
   );
-
-  console.log("arrEmailReceived", arrEmailReceived);
-  console.log("arrEmailSent", arrEmailSent);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -93,7 +92,10 @@ export default function HistoryEmailPage() {
       dataIndex: "emails.attachment",
       width: 300,
       render: (text, record, index) => {
-        if (Array.isArray(record.emails.attachedFiles)) {
+        if (
+          Array.isArray(record.emails.attachedFiles) &&
+          record.emails.attachedFiles.length > 0
+        ) {
           return record.emails.attachedFiles.map((item, index) => {
             return (
               <a
@@ -220,7 +222,8 @@ export default function HistoryEmailPage() {
     },
   ];
   const onSearch = (value) => {
-    console.log("value", value);
+    const action = searchEmailAction(value);
+    dispatch(action);
   };
   return (
     <div>
@@ -250,7 +253,7 @@ export default function HistoryEmailPage() {
             />
           </div>
         </div>
-        {/* <ModalSearchSms /> */}
+        <ModalSearchEmail />
       </div>
     </div>
   );

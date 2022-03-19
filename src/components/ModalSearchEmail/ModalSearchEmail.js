@@ -1,29 +1,29 @@
-import { Button, Modal, Table } from "antd";
+import { Modal, Table } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModalSmsAction } from "../../redux/actions/SmsAction";
+import { closeModalEmailAction } from "../../redux/actions/EmailAction";
 import * as dayjs from "dayjs";
 
-export default function ModalSearchSms() {
-  const { modalSms } = useSelector((state) => state.SmsReducer);
+export default function ModalSearchEmail() {
+  const { modalEmail } = useSelector((state) => state.EmailReducer);
   const dispatch = useDispatch();
   const handleCancle = () => {
-    const action = closeModalSmsAction();
+    const action = closeModalEmailAction();
     dispatch(action);
   };
-
-  const dataSms = [...modalSms.sms];
-  const dataUsers = [...modalSms.users];
-  const columnsSms = [
+  const dataEmails = [...modalEmail.emails];
+  const dataUsers = [...modalEmail.users];
+  console.log(dataUsers);
+  const columnsEmails = [
     {
-      title: "Mã tin nhắn",
-      dataIndex: "smsId",
+      title: "Mã email",
+      dataIndex: "emailId",
       width: 90,
       fixed: "left",
     },
     {
       title: "Nội dung",
-      dataIndex: "smsContent",
+      dataIndex: "emailContent",
       width: 200,
     },
     {
@@ -52,12 +52,12 @@ export default function ModalSearchSms() {
     },
     {
       title: "Tên người nhận",
-      dataIndex: "userHasSms.users.name",
+      dataIndex: "userHasEmail.users.name",
       render: (text, record, index) => {
-        if (!Array.isArray(record.userHasSms)) {
-          return record.userHasSms.users.name;
+        if (!Array.isArray(record.userHasEmail)) {
+          return record.userHasEmail.users.name;
         } else
-          return record.userHasSms.map((item, index) => (
+          return record.userHasEmail.map((item, index) => (
             <p key={index}>{item.users.name}</p>
           ));
       },
@@ -65,12 +65,12 @@ export default function ModalSearchSms() {
     },
     {
       title: "Số điện thoại người nhận",
-      dataIndex: "userHasSms.users.phone",
+      dataIndex: "userHasEmail.users.phone",
       render: (text, record, index) => {
-        if (!Array.isArray(record.userHasSms)) {
-          return record.userHasSms.users.phone;
+        if (!Array.isArray(record.userHasEmail)) {
+          return record.userHasEmail.users.phone;
         } else
-          return record.userHasSms.map((item, index) => (
+          return record.userHasEmail.map((item, index) => (
             <p key={index}>{item.users.phone}</p>
           ));
       },
@@ -78,16 +78,40 @@ export default function ModalSearchSms() {
     },
     {
       title: "Email người nhận",
-      dataIndex: "userHasSms.users.email",
+      dataIndex: "userHasEmail.users.email",
       render: (text, record, index) => {
-        if (!Array.isArray(record.userHasSms)) {
-          return record.userHasSms.users.email;
+        if (!Array.isArray(record.userHasEmail)) {
+          return record.userHasEmail.users.email;
         } else
-          return record.userHasSms.map((item, index) => (
+          return record.userHasEmail.map((item, index) => (
             <p key={index}>{item.users.email}</p>
           ));
       },
       width: 150,
+    },
+    {
+      title: "Têp đính kèm",
+      dataIndex: "fileAttached",
+      render: (text, record, index) => {
+        if (
+          Array.isArray(record.attachedFiles) &&
+          record.attachedFiles.length > 0
+        ) {
+          return record.attachedFiles.map((item, index) => {
+            return (
+              <a
+                className="block text-black hover:text-gray-500"
+                key={index}
+                href={`https://${item.filePath.replaceAll(" ", "%20")}`}
+                target="_blank"
+              >
+                {item.fileName}
+              </a>
+            );
+          });
+        }
+        return "Không có tệp đính kèm";
+      },
     },
     {
       title: "Ngày gửi",
@@ -96,33 +120,33 @@ export default function ModalSearchSms() {
         return dayjs(a.created_at).unix() - dayjs(b.created_at).unix();
       },
       sortDirections: ["descend", "ascend"],
-      width: 150,
-      render: (text) => {
-        return dayjs(text).format("DD/MM/YYYY, HH:mm:ss");
+      width: 200,
+      render: (text, record, index) => {
+        return dayjs(record.created_at).format("DD/MM/YYYY, HH:mm:ss");
       },
     },
   ];
   const columnsUsers = [
     {
-      title: "Họ tên",
-      dataIndex: "name",
-      width: 130,
+      title: "Mã người dùng",
+      dataIndex: "userId",
+      width: 90,
       fixed: "left",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      width: 130,
+      title: "Tên người dùng",
+      dataIndex: "name",
+      width: 200,
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
-      width: 80,
+      width: 150,
     },
     {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      width: 200,
+      title: "Email",
+      dataIndex: "email",
+      width: 150,
     },
     {
       title: "Avatar",
@@ -144,16 +168,16 @@ export default function ModalSearchSms() {
   return (
     <Modal
       centered
-      visible={modalSms.visible}
+      visible={modalEmail.visible}
       onCancel={() => handleCancle()}
       width={1000}
       footer={[]}
     >
       <div className="">
-        <p className="font-bold text-xl">Tin nhắn</p>
+        <p className="font-bold text-xl">Email</p>
         <Table
-          dataSource={dataSms}
-          columns={columnsSms}
+          dataSource={dataEmails}
+          columns={columnsEmails}
           scroll={{ x: 1500, y: window.innerHeight / 2 - 250 }}
         />
       </div>

@@ -50,7 +50,6 @@ export default function ModalContact() {
         .matches(REGEX_PHONE_NUMBER, "Số điện thoại không đúng định dạng"),
     }),
     onSubmit: (values) => {
-      console.log("values", values);
       handleOk(values);
     },
   });

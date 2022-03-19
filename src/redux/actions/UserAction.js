@@ -81,7 +81,6 @@ export const sendSmsAction = (content, receivers) => {
         if (res.data.data.arrNumErr.length === 0) {
           message.success("Gửi tin nhắn thành công!");
         } else {
-          console.log(res.data);
           notification["info"]({
             message: "",
             description: (
