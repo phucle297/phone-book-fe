@@ -1,21 +1,30 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Select, Upload } from "antd";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import {
+  addAvatarContactAction,
   addUserAction,
   closeModalAction,
+  getAllUserAction,
   uploadAvatarAction,
 } from "../../redux/actions/UserAction";
 import { REGEX_PHONE_NUMBER } from "../../util/setting";
 import "./ModalAddContact.css";
 
 export default function ModalAddContact() {
-  const { modal } = useSelector((state) => state.UserReducer);
+  const { modal, chosenContact } = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
-
+  const [srcImg, setSrcImg] = useState("");
+  useEffect(() => {
+    if (srcImg === "" && chosenContact.user.avatar !== "") {
+      if (chosenContact.user.avatar.includes("http")) {
+        setSrcImg(chosenContact.user.avatar);
+      } else setSrcImg(`https://${chosenContact.user.avatar}`);
+    }
+  }, [chosenContact.user.avatar]);
   const handleOk = () => {
     const action = closeModalAction();
     dispatch(action);
@@ -52,9 +61,10 @@ export default function ModalAddContact() {
     },
   });
   const dummyRequest = async ({ file, onSuccess }) => {
-    const action = uploadAvatarAction(file);
+    const action = addAvatarContactAction(file);
     await dispatch(action);
-    await formik.setFieldValue("avatar", userDetail.avatar);
+    console.log(chosenContact);
+    await formik.setFieldValue("avatar", chosenContact.user.avatar);
     return onSuccess("ok");
   };
   return (
@@ -140,11 +150,7 @@ export default function ModalAddContact() {
             <p>Avatar</p>
             <div className=" flex items-center justify-start">
               <img
-                src={
-                  formik.values.avatar?.includes("http")
-                    ? formik.values.avatar
-                    : `https://${formik.values.avatar}`
-                }
+                src={srcImg}
                 alt="Avatar"
                 className="rounded-full w-10 h-10 mr-5"
               />
