@@ -144,7 +144,7 @@ export default function HistorySmsPage() {
   return (
     <div>
       <div className="container mx-auto py-3 m-5">
-        <h2 className="text-4xl font-bold">Lịch sử tin nhắn</h2>
+        <h2 className="text-4xl font-bold">Tin nhắn</h2>
         <div className="mt-6">
           <Search
             className="mb-6"

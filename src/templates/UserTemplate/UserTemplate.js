@@ -3,7 +3,7 @@ import {
   BookOutlined,
   LogoutOutlined,
   MailOutlined,
-  PhoneOutlined,
+  MessageOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, message } from "antd";
@@ -25,6 +25,8 @@ export default function UserTemplate() {
   else if (window.location.pathname === "/email") page = "4";
   const { Sider } = Layout;
   const dispatch = useDispatch();
+  const [srcImg, setSrcImg] = useState("");
+
   useEffect(() => {
     (async () => {
       const actionGetUserDetail = getUserInfoAction();
@@ -46,6 +48,15 @@ export default function UserTemplate() {
       }
     })();
   }, []);
+  useEffect(() => {
+    if (userDetail) {
+      if (userDetail.avatar) {
+        if (!userDetail.avatar.includes("http"))
+          setSrcImg(`https://${userDetail.avatar}`);
+        else setSrcImg(userDetail.avatar);
+      } else setSrcImg("https://picsum.photos/200/200");
+    }
+  }, [userDetail.avatar]);
 
   const [collapsed, setCollapsed] = React.useState(true);
   return (
@@ -55,11 +66,7 @@ export default function UserTemplate() {
           <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
             <div className="logo">
               <img
-                src={
-                  userDetail
-                    ? `${userDetail.avatar}`
-                    : "https://picsum.photos/200/200"
-                }
+                src={srcImg}
                 className={
                   " bg-white rounded-full my-10 mx-auto" +
                   (collapsed ? " w-14 h-14" : " w-20 h-20 mb-5")
@@ -85,7 +92,7 @@ export default function UserTemplate() {
                   User
                 </NavLink>
               </Menu.Item>
-              <Menu.Item key="3" icon={<PhoneOutlined />}>
+              <Menu.Item key="3" icon={<MessageOutlined />}>
                 <NavLink to="/sms" onClick={() => setPage("3")}>
                   Sms
                 </NavLink>

@@ -12,6 +12,15 @@ class EmailServices {
       attachments,
     });
   }
+  getAllEmailReceived() {
+    return http.get("/emails/get-all-emails-receive");
+  }
+  getAllEmailSent() {
+    return http.get("/emails/get-all-emails-sent");
+  }
+  searchEmail(searchContent) {
+    return http.get(`/emails/search/${searchContent}`);
+  }
 }
 
 const emailServices = new EmailServices();

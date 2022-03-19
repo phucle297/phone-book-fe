@@ -5,10 +5,11 @@ import {
   GET_ALL_SMS_SENT,
   SEARCH_SMS,
 } from "../types/SmsType";
+import SmsServices from "../../services/SmsServices";
 
 export const getAllSmsSentAction = () => {
   return (dispatch) => {
-    const promise = http.get("/sms/get-all-sms-sent");
+    const promise = SmsServices.getAllSmsSent();
     promise.then((res) => {
       dispatch({ type: GET_ALL_SMS_SENT, data: res.data.data });
     });
@@ -17,7 +18,7 @@ export const getAllSmsSentAction = () => {
 
 export const getAllSmsReceivedAction = () => {
   return (dispatch) => {
-    const promise = http.get("/sms/get-all-sms-receive");
+    const promise = SmsServices.getAllSmsReceive();
     promise.then((res) => {
       dispatch({ type: GET_ALL_SMS_RECEIVED, data: res.data.data });
     });
@@ -26,7 +27,7 @@ export const getAllSmsReceivedAction = () => {
 
 export const searchSmsAction = (searchContent) => {
   return (dispatch) => {
-    const promise = http.get(`/sms/search/${searchContent}`);
+    const promise = SmsServices.searchSms(searchContent);
     promise.then((res) => {
       dispatch({
         type: SEARCH_SMS,
