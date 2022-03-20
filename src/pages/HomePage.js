@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Input, message, Table } from "antd";
+import { Input, message, Popconfirm, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalAddContact from "../components/ModalAddContact/ModalAddContact";
@@ -98,9 +98,9 @@ const HomePage = () => {
             >
               Chỉnh sửa
             </button>
-            <button
-              className="rounded bg-red-500 py-2 px-3 hover:bg-red-600 font-bold"
-              onClick={async () => {
+            <Popconfirm
+              title="Bạn có chắc chắn muốn xóa?"
+              onConfirm={async () => {
                 if (userDetail.role !== "Admin") {
                   message.error("Bạn chỉ có thể xóa liên hệ nếu bạn là Admin");
                 } else {
@@ -108,9 +108,13 @@ const HomePage = () => {
                   await dispatch(deleteAction);
                 }
               }}
+              okText="Xác nhận"
+              cancelText="Hủy bỏ"
             >
-              Xóa
-            </button>
+              <button className="rounded bg-red-500 py-2 px-3 hover:bg-red-600 font-bold">
+                Xóa
+              </button>
+            </Popconfirm>
           </div>
         );
       },
