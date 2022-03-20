@@ -16,6 +16,7 @@ const ModalSMSEmail = (props) => {
   const { modal, arrUserSelected, attachedFiles } = useSelector(
     (state) => state.UserReducer
   );
+  console.log(attachedFiles);
   const [text, setText] = useState("");
   const [subject, setSubject] = useState("");
   const dispatch = useDispatch();
@@ -48,7 +49,8 @@ const ModalSMSEmail = (props) => {
     onChange({ file, fileList }) {
       if (attachedFiles.length === 0) return (fileList = []);
       if (fileList.length < attachedFiles.length) {
-        const action = detachFileAction(file.name);
+        console.log(file.name);
+        const action = detachFileAction(file.name.replace(" ", "+"));
         dispatch(action);
       }
     },

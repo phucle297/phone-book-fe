@@ -65,6 +65,7 @@ export default (state = initialState, action) => {
       return { ...state };
     }
     case CLOSE_MODAL: {
+      state.attachedFiles = [];
       state.modal.visible = false;
       state.chosenContact = {
         visible: false,
@@ -92,6 +93,8 @@ export default (state = initialState, action) => {
       const newAttachedFiles = state.attachedFiles.filter(
         (url) => !url.includes(action.name)
       );
+      console.log(action.name);
+      console.log(newAttachedFiles);
       state.attachedFiles = newAttachedFiles;
       return { ...state };
     }

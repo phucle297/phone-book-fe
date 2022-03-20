@@ -125,7 +125,7 @@ export const attachedFileAction = (file) => {
 };
 export const detachFileAction = (name) => {
   return (dispatch) => {
-    dispatch({ type: DETACH_FILE, name });
+    dispatch({ type: DETACH_FILE, name: name.replaceAll(" ", "+") });
   };
 };
 export const sendEmailAction = (
