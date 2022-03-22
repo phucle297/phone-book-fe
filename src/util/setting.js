@@ -29,7 +29,7 @@ export function parseJwt() {
 export const USER_ACCOUNT = "userAccount";
 export const http = axios.create({
   // baseURL: "http://phone-book-api.online:8080/api",
-  baseURL: "https://phone-book-api.online:8443/api",
+  baseURL: "https://phone-book-api.online/api",
   timeout: 30000,
 });
 
